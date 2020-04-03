@@ -1,0 +1,10 @@
+[
+    { "type": "title",
+      "title": "Test application" },
+
+    { "type": "string",
+      "title": "Location",
+      "desc": "Description of my second key",
+      "section": "HomeLearning",
+      "key": "Path" }
+]

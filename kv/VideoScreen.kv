@@ -1,0 +1,16 @@
+<VideoScreen>
+    player: player
+    video_file: ''
+    on_enter: player.state = 'play'
+    BoxLayout:
+        orientation: 'vertical'
+        Button:
+            id: btnBack
+            text: 'Back'
+            on_release: root.do_exit()
+            size_hint_y: 0.1
+        VideoPlayer:
+            id: player
+            source: root.video_file
+            fullscreen: True
+    

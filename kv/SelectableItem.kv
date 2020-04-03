@@ -1,0 +1,23 @@
+<SelectableItem>:
+
+<Item@BoxLayout>:
+    text: ''
+    type: ''
+    source: ''
+    orientation: 'vertical'
+    padding: dp(10), dp(10), dp(10), dp(10)
+    on_release: root.change_location()
+    canvas.before:
+        Color:
+            rgba: (0.4, 0.4, 0.4, 1) if self.selected else (0.5, 0.5, 0.5, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    Image:
+        source: root.source
+        allow_stretch: True
+    Label:
+        markup: True
+        font_name: 'tradchinese'
+        font_size: '24sp'
+        text: root.text

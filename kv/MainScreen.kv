@@ -1,0 +1,44 @@
+<MainScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        ActionBar:
+            pos_hint: {'top': 1}
+            ActionView:
+                use_separator: True
+                Hidden_ActionPrevious:
+
+                ActionOverflow:
+                ActionButton:
+                    font_name: 'FA5Solid'
+                    text: '\uf03a'
+                ActionButton:
+                    font_name: 'FA5Solid'
+                    text: '\uf015'
+                    on_release: root.gotoRootFolder()
+                ActionButton:
+                    font_name: 'FA5Solid'
+                    text: '\uf3bf'
+                    on_release: root.gotoPrevFolder()
+                ActionButton:
+                    font_name: 'FA5Solid'
+                    text: '\uf013'
+                    on_release: app.open_settings()
+
+        RecycleView:
+            id: FileList
+            viewclass: 'SelectableItem'
+            scroll_type: ['bars', 'content']
+            scroll_wheel_distance: dp(114)
+            bar_width: dp(50)
+            do_scroll_x: True
+            do_scroll_y: False
+            SelectableRecycleBoxLayout:
+                default_size: dp(500), dp(500)
+                size_hint_x: None
+                size_hint_y: None
+                width: self.minimum_width
+                height: self.minimum_height
+                orientation: 'horizontal'
+                # multiselect: True
+                touch_multiselect: False
+                spacing: dp(2)
