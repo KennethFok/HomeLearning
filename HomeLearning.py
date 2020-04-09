@@ -22,17 +22,17 @@ from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
 from kivy.config import Config
 
 # Gets current python dir then add the KV dir
-kv_path = os.getcwd() + '/kv/'
+kv_path = os.path.join(os.getcwd(),'kv')
 kv_load_list = [f for f in listdir(kv_path) if isfile(join(kv_path, f))]
 
-icon_folder = 'res\icons8-folder-500.png'
-icon_file = 'res\icons8-file-500.png'
-icon_video = 'res\icons8-cinema-film-play-500.png'
+icon_folder = os.path.join(os.path.dirname(__file__), 'res', 'icons8-folder-500.png')
+icon_file = os.path.join(os.path.dirname(__file__), 'res', 'icons8-file-500.png')
+icon_video = os.path.join(os.path.dirname(__file__), 'res', 'icons8-cinema-film-play-500.png')
 
 # Loads all KV file
 for file in kv_load_list:
     if file.endswith('.kv'):
-        Builder.load_file(kv_path + file)
+        Builder.load_file(os.path.join(kv_path, file))
 
 class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
                                  RecycleBoxLayout):
@@ -131,14 +131,16 @@ class ScManager(ScreenManager):
         super(ScManager, self).__init__(*args, **kwargs)
 
 class HomeLearningApp(App):
-    folder_path = StringProperty('D:\\')
+    folder_path = StringProperty('')
     file_list = ListProperty()
     current_lv = NumericProperty(0)
     def get_application_config(self):
         return super(HomeLearningApp, self).get_application_config(
-            'config/%(appname)s.ini')
+             os.path.join('config', '%(appname)s.ini'))
 
     def build_config(self, config):
+        Config.set('graphics', 'width', '1280')
+        Config.set('graphics', 'height', '800')        
         config.setdefaults('HomeLearning', {})
 
     def build(self):
@@ -153,7 +155,7 @@ class HomeLearningApp(App):
         return sm
 
     def build_settings(self, settings):
-        settings.add_json_panel('HomeLearning', self.config, 'config\settings.json')
+        settings.add_json_panel('HomeLearning', self.config, os.path.join('config', 'settings.json'))
 
 
 def getFileList(file_list, path):
@@ -212,13 +214,36 @@ def loadFileList(folder_path):
     #print(file_list)
     return file_list
 
+def smbwalk(conn, shareddevice, top = u'/'):
+    dirs , nondirs = [], []
+
+    if not isinstance(conn, SMBConnection):
+        raise TypeError("SMBConnection required")
+
+
+    names = conn.listPath(shareddevice, top)
+
+    for name in names:
+        if name.isDirectory:
+            if name.filename not in [u'.', u'..']:
+                dirs.append(name.filename)
+        else:
+            nondirs.append(name.filename)
+
+    yield top, dirs, nondirs
+
+    for name in dirs:
+        new_path = os.path.join(top, name)
+        for x in smbwalk(conn, shareddevice, new_path):
+            yield x
+
 
 if __name__ == '__main__':
     LabelBase.register(name='FA5Regular',
-                       fn_regular='res\\FontAwesome5\\Font Awesome 5 Free-Regular-400.otf')
+                       fn_regular=os.path.join(os.path.dirname(__file__), 'res', 'FontAwesome5', 'Font Awesome 5 Free-Regular-400.otf'))
     LabelBase.register(name='FA5Solid',
-                       fn_regular='res\\FontAwesome5\\Font Awesome 5 Free-Solid-900.otf')
+                       fn_regular=os.path.join(os.path.dirname(__file__), 'res', 'FontAwesome5', 'Font Awesome 5 Free-Solid-900.otf'))
     LabelBase.register(name='tradchinese',
-                       fn_regular='res\\NotoSansTC\\NotoSansTC-Regular.otf',
-                       fn_bold='res\\NotoSansTC\\NotoSansTC-Bold.otf')
+                       fn_regular=os.path.join(os.path.dirname(__file__), 'res', 'NotoSansTC', 'NotoSansTC-Regular.otf'),
+                       fn_bold=os.path.join(os.path.dirname(__file__), 'res', 'NotoSansTC', 'NotoSansTC-Bold.otf'))
     HomeLearningApp().run()

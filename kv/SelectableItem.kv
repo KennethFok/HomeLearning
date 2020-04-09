@@ -1,11 +1,12 @@
 <SelectableItem>:
-
+    padding: dp(50), dp(50), dp(50), dp(50)
+    
 <Item@BoxLayout>:
     text: ''
     type: ''
     source: ''
     orientation: 'vertical'
-    padding: dp(10), dp(10), dp(10), dp(10)
+    
     on_release: root.change_location()
     canvas.before:
         Color:
